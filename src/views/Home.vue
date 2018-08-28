@@ -18,6 +18,9 @@ export default {
   methods: {
     test () {
       this.$store.commit('INCREASE')
+      this.$http.get('/topics').then((data) => {
+        console.log(data)
+      })
     },
     action () {
       this.$store.dispatch('increment')
