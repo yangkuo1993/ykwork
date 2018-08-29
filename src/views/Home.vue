@@ -14,9 +14,10 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
-
+import mianMix from '@/mixins/'
 export default {
   name: 'home',
+  mixins: [mianMix],
   data () {
     return {
       message: 'begin',
