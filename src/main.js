@@ -4,6 +4,8 @@ import router from './router/router'
 import store from './store/store'
 import FastClick from 'fastclick'
 import axios from '@/api/api.js'
+import '@/filters/'
+import '@/directives'
 Vue.config.productionTip = false
 // FastClick
 if ('addEventListener' in document) {
