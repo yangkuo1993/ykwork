@@ -1,13 +1,23 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
-
+<script>
+export default {
+  data () {
+    return{
+      routeName: ''
+    }
+  },
+  watch: {
+    '$route' (item) {
+      this.routeName = item.name
+    }
+  }
+}
+</script>
 <style lang="scss">
-
 </style>

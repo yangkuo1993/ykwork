@@ -1,54 +1,100 @@
 <template>
   <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <button @click="test">test</button>
-    <button @click="action">action</button>
-    <div ref="msg">{{message | dataFormat}}</div>
-    <button @click="click">click</button>
-    <div>{{number}}</div>
-    <button @click="numberAdd">numberAdd</button>
-    <input v-focus placeholder="测测测">
+    <van-tabs v-model="active" swipeable sticky>
+      <van-tab v-for="(item) in topics" :title="item.name" :key="item.id">
+         <van-list
+            v-model="loading"
+            :finished="finished"
+            @load="onLoad"
+          >
+            <van-cell
+            v-for="news in item.list"
+            :key="news.id"
+              :title="news.title"
+              @click="details(news.id)"
+            />
+          </van-list>
+      </van-tab>
+    </van-tabs>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 import mianMix from '@/mixins/'
 export default {
   name: 'home',
   mixins: [mianMix],
   data () {
     return {
-      message: 'begin',
-      number: 0
+      active: 0,
+      list: [],
+      loading: false,
+      finished: false,
+      topics: [
+        {
+          name: '全部',
+          id: 'all',
+          page: 0,
+          limit: 20,
+          mdrender: true,
+          list: []
+        },
+        {
+          name: '精华',
+          id: 'good',
+          page: 0,
+          limit: 20,
+          mdrender: true,
+          list: []
+        },
+        {
+          name: '分享',
+          id: 'share',
+          page: 0,
+          limit: 20,
+          mdrender: true,
+          list: []
+        },
+        {
+          name: '问答',
+          id: 'ask',
+          page: 0,
+          limit: 20,
+          mdrender: true,
+          list: []
+        },
+        {
+          name: '招聘',
+          id: 'job',
+          page: 0,
+          limit: 20,
+          mdrender: true,
+          list: []
+        }
+      ]
     }
   },
   components: {
-    HelloWorld
   },
   methods: {
-    test () {
-      this.$store.commit('INCREASE')
-      this.$http.get('/topics').then((data) => {
-        console.log(data)
+    onLoad() {
+      this.topics[this.active].page += 1
+      const param = `?page=${this.topics[this.active].page}&limit=${this.topics[this.active].limit}&mdrender=${this.topics[this.active].mdrender}&tab=${this.topics[this.active].id}`
+      this.$http.get(`/topics${param}`).then((data) => {
+        this.topics[this.active].list = this.topics[this.active].list.concat(data.data.data)
+        this.loading = false
       })
     },
-    action () {
-      this.$store.dispatch('increment')
-    },
-    click () {
-      this.message = 'end'
-      this.$nextTick(() => {
-        console.log(this.$refs.msg.innerText)
-      })
-    },
-    numberAdd () {
-      for (let i = 0; i < 10; i++) {
-        this.number++
-        console.log(this.number)
-      }
+    details (id) {
+      console.log(id)
+      this.$router.push({name: `about`, params: {id: id}})
     }
   }
 }
 </script>
+<style>
+.van-cell:not(:last-child):after{
+  content: '' !important
+}
+</style>
+

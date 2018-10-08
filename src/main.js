@@ -7,6 +7,9 @@ import axios from '@/api/api.js'
 import '@/filters/'
 import '@/directives'
 import 'normalize.css'
+import Vant from 'vant'
+import 'vant/lib/vant-css/index.css'
+Vue.use(Vant)
 Vue.config.productionTip = false
 // FastClick
 if ('addEventListener' in document) {
